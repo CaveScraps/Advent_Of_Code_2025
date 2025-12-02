@@ -1,4 +1,4 @@
-PROJECT_NAME=Advent_2025_Day1
+PROJECT_NAME=Advent_2025_Day1.exe
 OBJECT_FILES=main.o
 
 CFLAGS=-std=c++20 -Wall -Wextra -Werror
