@@ -1,3 +1,4 @@
 *.o
 *.exe
+.ccls-cache
 *\/input.txt
