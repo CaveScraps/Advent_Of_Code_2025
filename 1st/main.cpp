@@ -8,11 +8,6 @@ public:
     RotaryDial() : m_minimumNumber(0), m_maximumNumber(99), m_currentNumber(50), m_totalTimesPassingZero(0), m_totalTimesStoppedAtZero(0)
     {}
 
-    int GetCurrentNumber() const
-    {
-        return m_currentNumber;
-    }
-
     int GetTotalTimesPassingZero() const
     {
         return m_totalTimesPassingZero;
@@ -97,9 +92,7 @@ int main()
         int placesToMove = std::stoi(line.substr(1));
         int signModifier = line[0] == 'L' ? -1 : 1; // If we are moving left we need to modify the number to have a negative sign.
 
-        // std::cout << "Moving dial " << placesToMove * signModifier << std::endl;
         dial.MoveDial(placesToMove * signModifier);
-        // std::cout << "This leaves the dial at: " << dial.GetCurrentNumber() << std::endl;
     }
 
     std::cout << "Dial ended rotation at zero: " << dial.GetTotalTimesStoppedAtZero() << " times." << std::endl;
