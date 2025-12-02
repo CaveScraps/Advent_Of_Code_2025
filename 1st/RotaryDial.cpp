@@ -16,11 +16,6 @@ int RotaryDial::GetTotalTimesStoppedAtZero() const
 
 void RotaryDial::MoveDial(int places)
 {
-    if(places == 0)
-    {
-        return;
-    }
-
     bool moveInPositiveDirection = places > 0;
     unsigned int numberOfPlacesLeftToMove = abs(places);
 
