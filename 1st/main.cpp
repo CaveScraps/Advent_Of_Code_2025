@@ -5,12 +5,22 @@
 class RotaryDial
 {
 public:
-    RotaryDial() : m_minimumNumber(0), m_maximumNumber(99), m_currentNumber(50)
+    RotaryDial() : m_minimumNumber(0), m_maximumNumber(99), m_currentNumber(50), m_totalTimesPassingZero(0), m_totalTimesStoppedAtZero(0)
     {}
 
     int GetCurrentNumber() const
     {
         return m_currentNumber;
+    }
+
+    int GetTotalTimesPassingZero() const
+    {
+        return m_totalTimesPassingZero;
+    }
+
+    int GetTotalTimesStoppedAtZero() const
+    {
+        return m_totalTimesStoppedAtZero;
     }
 
     void MoveDial(int places)
@@ -40,13 +50,28 @@ public:
             }
 
             numberOfPlacesLeftToMove--;
+
+            if(m_currentNumber == 0)
+            {
+                m_totalTimesPassingZero++;
+            }
+        }
+
+        if(m_currentNumber == 0)
+        {
+            m_totalTimesStoppedAtZero++;
         }
     }
 
 private:
+        // Constraints on the size of the dial.
         const int m_minimumNumber;
         const int m_maximumNumber;
-        int m_currentNumber;
+
+        int m_currentNumber; // The current number the dial is on.
+
+        int m_totalTimesPassingZero; // How many times the dial has moved past zero in total.
+        int m_totalTimesStoppedAtZero; // How many times a call to MoveDial has ended with the dial resting on zero.
 };
 
 int main()
@@ -61,7 +86,6 @@ int main()
 
     RotaryDial dial;
     std::string line;
-    int zeroCounter = 0;
 
     while(std::getline(file, line))
     {
@@ -73,17 +97,13 @@ int main()
         int placesToMove = std::stoi(line.substr(1));
         int signModifier = line[0] == 'L' ? -1 : 1; // If we are moving left we need to modify the number to have a negative sign.
 
-        std::cout << "Moving dial " << placesToMove * signModifier << std::endl;
+        // std::cout << "Moving dial " << placesToMove * signModifier << std::endl;
         dial.MoveDial(placesToMove * signModifier);
-        std::cout << "This leaves the dial at: " << dial.GetCurrentNumber() << std::endl;
-
-        if(dial.GetCurrentNumber() == 0)
-        {
-            zeroCounter++;
-        }
+        // std::cout << "This leaves the dial at: " << dial.GetCurrentNumber() << std::endl;
     }
 
-    std::cout << "Dial was at zero: " << zeroCounter << " times." << std::endl;
+    std::cout << "Dial ended rotation at zero: " << dial.GetTotalTimesStoppedAtZero() << " times." << std::endl;
+    std::cout << "Dial passed zero a total of: " << dial.GetTotalTimesPassingZero() << " times." << std::endl;
 
     return 0;
 }
