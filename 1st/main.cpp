@@ -77,6 +77,7 @@ int main()
     if(!file.is_open())
     {
         std::cerr << "Error: Unable to open file: " << fileName << std::endl;
+        exit(1);
     }
 
     RotaryDial dial;
@@ -87,6 +88,7 @@ int main()
         if(line[0] != 'L' && line[0] != 'R')
         {
             std::cerr << "Invalid content in input file: '" << line << "'" << std::endl;
+            exit(1);
         }
 
         int placesToMove = std::stoi(line.substr(1));
