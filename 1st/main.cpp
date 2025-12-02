@@ -33,5 +33,6 @@ int main()
     std::cout << "Dial ended rotation at zero: " << dial.GetTotalTimesStoppedAtZero() << " times." << std::endl;
     std::cout << "Dial passed zero a total of: " << dial.GetTotalTimesPassingZero() << " times." << std::endl;
 
+    file.close();
     return 0;
 }
