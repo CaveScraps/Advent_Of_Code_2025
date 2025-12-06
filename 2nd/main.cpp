@@ -30,21 +30,21 @@ inline bool IsLineInvalidForPart2(const std::string& line)
 // The task that gets passed to the thread.
 inline std::pair<size_t,size_t> RangeValidationTask(const std::string& startRange, const std::string& endRange)
 {
-        size_t invalidIdSumPart1 = 0;
-        size_t invalidIdSumPart2 = 0;
-        for(size_t id = std::stoull(startRange); id <= std::stoull(endRange); id++)
+    size_t invalidIdSumPart1 = 0;
+    size_t invalidIdSumPart2 = 0;
+    for(size_t id = std::stoull(startRange); id <= std::stoull(endRange); id++)
+    {
+        const std::string currentId = std::to_string(id);
+        if(IsLineInvalidForPart1(currentId))
         {
-            const std::string currentId = std::to_string(id);
-            if(IsLineInvalidForPart1(currentId))
-            {
-                invalidIdSumPart1 += id;
-            }
-            if(IsLineInvalidForPart2(currentId))
-            {
-                invalidIdSumPart2 += id;
-            }
+            invalidIdSumPart1 += id;
         }
-        return std::pair<size_t, size_t>(invalidIdSumPart1, invalidIdSumPart2);
+        if(IsLineInvalidForPart2(currentId))
+        {
+            invalidIdSumPart2 += id;
+        }
+    }
+    return std::pair<size_t, size_t>(invalidIdSumPart1, invalidIdSumPart2);
 }
 
 int main()
