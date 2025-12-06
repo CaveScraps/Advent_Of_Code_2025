@@ -5,7 +5,7 @@
 #include <thread>
 #include <future>
 
-bool IsLineInvalidForPart1(const std::string& line)
+inline bool IsLineInvalidForPart1(const std::string& line)
 {
     // Regex matches from line start (^) any sequence of one or more digits (\d+) that is immediately repeated (\1) exactally once with no characters in between.
     const std::regex InvalidIdSequence("^(\\d+)\\1$",  std::regex_constants::ECMAScript);
@@ -16,7 +16,7 @@ bool IsLineInvalidForPart1(const std::string& line)
     return false;
 }
 
-bool IsLineInvalidForPart2(const std::string& line)
+inline bool IsLineInvalidForPart2(const std::string& line)
 {
     // Regex matches from line start (^) any sequence of one or more digits (\d+) that is immediately repeated (\1) once or more (+) with no characters in between.
     const std::regex InvalidIdSequence("^(\\d+)\\1+$",  std::regex_constants::ECMAScript);
@@ -28,7 +28,7 @@ bool IsLineInvalidForPart2(const std::string& line)
 }
 
 // The task that gets passed to the thread.
-std::pair<size_t,size_t> RangeValidationTask(const std::string& startRange, const std::string& endRange)
+inline std::pair<size_t,size_t> RangeValidationTask(const std::string& startRange, const std::string& endRange)
 {
         size_t invalidIdSumPart1 = 0;
         size_t invalidIdSumPart2 = 0;
