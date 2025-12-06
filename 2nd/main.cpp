@@ -84,11 +84,10 @@ int main()
         // Has it frozen? Is it just taking a while? Who knows.
         const std::string startId = idRangeString.substr(0, dashPosition);
         const std::string endId = idRangeString.substr(dashPosition + 1, idRangeString.size());
-
         workers.push_back(std::async(RangeValidationTask, startId, endId));
     }
 
-    std::cout << "Threads launched, waiting for results" << std::endl;
+    std::cout << "Threads launched, waiting for results..." << std::endl;
 
     size_t invalidIdSumPart1 = 0;
     size_t invalidIdSumPart2 = 0;
