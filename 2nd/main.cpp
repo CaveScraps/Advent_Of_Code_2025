@@ -5,6 +5,7 @@
 
 bool IsLineInvalidForPart1(const std::string& line)
 {
+    // Regex matches from line start (^) any sequence of one or more digits (\d+) that is immediately repeated (\1) exactally once with no characters in between.
     const std::regex InvalidIdSequence("^(\\d+)\\1$",  std::regex_constants::ECMAScript);
     if(std::regex_search(line, InvalidIdSequence))
     {
@@ -15,6 +16,7 @@ bool IsLineInvalidForPart1(const std::string& line)
 
 bool IsLineInvalidForPart2(const std::string& line)
 {
+    // Regex matches from line start (^) any sequence of one or more digits (\d+) that is immediately repeated (\1) once or more (+) with no characters in between.
     const std::regex InvalidIdSequence("^(\\d+)\\1+$",  std::regex_constants::ECMAScript);
     if(std::regex_search(line, InvalidIdSequence))
     {
