@@ -2,6 +2,8 @@
 #include <fstream>
 #include <sstream>
 #include <regex>
+#include <thread>
+#include <future>
 
 bool IsLineInvalidForPart1(const std::string& line)
 {
@@ -25,6 +27,26 @@ bool IsLineInvalidForPart2(const std::string& line)
     return false;
 }
 
+// The task that gets passed to the thread.
+std::pair<size_t,size_t> RangeValidationTask(const std::string& startRange, const std::string& endRange)
+{
+        unsigned long invalidIdSumPart1 = 0;
+        unsigned long invalidIdSumPart2 = 0;
+        for(unsigned long id = std::stoul(startRange); id <= std::stoul(endRange); id++)
+        {
+            const std::string currentId = std::to_string(id);
+            if(IsLineInvalidForPart1(currentId))
+            {
+                invalidIdSumPart1 += id;
+            }
+            if(IsLineInvalidForPart2(currentId))
+            {
+                invalidIdSumPart2 += id;
+            }
+        }
+        return std::pair<size_t, size_t>(invalidIdSumPart1, invalidIdSumPart2);
+}
+
 int main()
 {
     const std::string fileName = "input.txt";
@@ -40,8 +62,7 @@ int main()
     std::getline(file, line);
     file.close(); // Only one line expected.
 
-    unsigned long invalidIdSumPart1 = 0;
-    unsigned long invalidIdSumPart2 = 0;
+    std::vector<std::future<std::pair<size_t, size_t>>> workers{};
     std::stringstream lineStream(line);
     while(lineStream.good())
     {
@@ -63,18 +84,19 @@ int main()
         // Has it frozen? Is it just taking a while? Who knows.
         const std::string startId = idRangeString.substr(0, dashPosition);
         const std::string endId = idRangeString.substr(dashPosition + 1, idRangeString.size());
-        for(unsigned long id = std::stoul(startId); id <= std::stoul(endId); id++)
-        {
-            const std::string currentId = std::to_string(id);
-            if(IsLineInvalidForPart1(currentId))
-            {
-                invalidIdSumPart1 += id;
-            }
-            if(IsLineInvalidForPart2(currentId))
-            {
-                invalidIdSumPart2 += id;
-            }
-        }
+
+        workers.push_back(std::async(RangeValidationTask, startId, endId));
+    }
+
+    std::cout << "Threads launched, waiting for results" << std::endl;
+
+    size_t invalidIdSumPart1 = 0;
+    size_t invalidIdSumPart2 = 0;
+    for(auto& workingThread : workers)
+    {
+        auto resultPair = workingThread.get();
+        invalidIdSumPart1 += resultPair.first;
+        invalidIdSumPart2 += resultPair.second;
     }
 
     std::cout << "The total of the invalid IDs is for part 1 is: " << invalidIdSumPart1 << std::endl;
