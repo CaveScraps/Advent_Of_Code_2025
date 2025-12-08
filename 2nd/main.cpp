@@ -7,6 +7,10 @@
 
 inline bool IsLineInvalidForPart1(const std::string& line)
 {
+    if(line.size() % 2 != 0)
+    {
+        return false; // Odd length lines cannot be made up of two identical halves.
+    }
     // Regex matches from line start (^) any sequence of one or more digits (\d+) that is immediately repeated (\1) exactally once with no characters in between.
     const std::regex InvalidIdSequence("^(\\d+)\\1$",  std::regex_constants::ECMAScript);
     if(std::regex_search(line, InvalidIdSequence))
