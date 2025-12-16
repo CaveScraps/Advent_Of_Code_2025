@@ -3,11 +3,12 @@
 #include <sstream>
 #include <vector>
 #include <algorithm>
-#include <thread>
-#include <future>
 
-// The task that gets passed to the thread.
-int BankMaxNumberTask(const std::vector<int>& bank)
+/**
+ * Given a vector of single digit integers, find the maximum two digit number
+ * that can be formed by taking any two digits in the order they appear in the vector.
+ */
+int MaxDoubleDigitNumberGivenLine(const std::vector<int>& bank)
 {
     if (bank.size() < 2)
     {
@@ -19,39 +20,20 @@ int BankMaxNumberTask(const std::vector<int>& bank)
         return bank[0] + bank[1];
     }
 
-    // Loop through the numbers and keep track of the max values and their locations.
-    int maxNumber = 0;
-    std::vector<int> maxNumberLocations;
-    for (int ii = 0; ii < static_cast<int>(bank.size()) - 1; ii++) // Dont want to count the last number as we need to be making a two digit number.
+    const auto maxNumberLocation = std::max_element(bank.begin(), bank.end());
+    if (maxNumberLocation == bank.end() - 1)
     {
-        if (bank[ii] > maxNumber)
-        {
-            maxNumber = bank[ii];
-            maxNumberLocations.clear();
-            maxNumberLocations.push_back(ii);
-        }
-        else if (bank[ii] == maxNumber)
-        {
-            maxNumberLocations.push_back(ii);
-        }
+        // Search back from this point for the next largest.
+        const auto secondMaxNumberLocation = std::max_element(bank.begin(), maxNumberLocation);
+        // Use this number as the second number and use the next largest as the first;
+        return (10* *secondMaxNumberLocation) + (*maxNumberLocation);
     }
-
-    // If we only have one match then we just use it and the next number.
-    if (maxNumberLocations.size() == 1)
+    else
     {
-        return (10* maxNumber) + bank[maxNumberLocations[0] + 1];
+        // Search onwards from this point for the next largest
+        const auto secondMaxNumberLocation = std::max_element(maxNumberLocation + 1, bank.end());
+        return (10* *maxNumberLocation) + (*secondMaxNumberLocation);
     }
-
-    int maxSecondNumber = 0;
-    for(auto maxNumberLocation : maxNumberLocations)
-    {
-        if (bank[maxNumberLocation + 1] > maxSecondNumber)
-        {
-            maxSecondNumber = bank[maxNumberLocation + 1];
-        }
-    }
-
-    return (10* maxNumber) + maxSecondNumber;
 }
 
 int main()
@@ -72,7 +54,7 @@ int main()
         std::vector<int> numbers;
         std::transform(line.begin(), line.end(), std::back_inserter(numbers), [](char c) {return c - '0';});
 
-        int result = BankMaxNumberTask(numbers);
+        const int result = MaxDoubleDigitNumberGivenLine(numbers);
         std::cout << result << std::endl;
         total += result;
     }
