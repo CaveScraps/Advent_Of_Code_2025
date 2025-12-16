@@ -17,7 +17,7 @@ int MaxDoubleDigitNumberGivenLine(const std::vector<int>& bank)
     }
 
     const auto maxNumberLocation = std::max_element(bank.begin(), bank.end());
-    if (maxNumberLocation == bank.end() - 1) // If the max number is at the end
+    if (maxNumberLocation == std::prev(bank.end())) // If the max number is at the end
     {
         // Search back from this point for the next largest.
         const auto secondMaxNumberLocation = std::max_element(bank.begin(), maxNumberLocation);
