@@ -15,10 +15,6 @@ int MaxDoubleDigitNumberGivenLine(const std::vector<int>& bank)
         std::cerr << "Bank found with less than 2 batteries." << std::endl;
         exit(1);
     }
-    else if (bank.size() == 2)
-    {
-        return bank[0] + bank[1];
-    }
 
     const auto maxNumberLocation = std::max_element(bank.begin(), bank.end());
     if (maxNumberLocation == bank.end() - 1)
@@ -55,7 +51,6 @@ int main()
         std::transform(line.begin(), line.end(), std::back_inserter(numbers), [](char c) {return c - '0';});
 
         const int result = MaxDoubleDigitNumberGivenLine(numbers);
-        std::cout << result << std::endl;
         total += result;
     }
 
