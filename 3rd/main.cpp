@@ -59,8 +59,6 @@ int main()
         total += result;
     }
 
-    file.close();
-
     std::cout << "The total of the banks is: " << total << std::endl;
     return 0;
 }
