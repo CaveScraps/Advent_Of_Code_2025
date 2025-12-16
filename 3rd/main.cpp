@@ -42,12 +42,12 @@ int main()
         exit(1);
     }
 
-    std::string line;
+    std::string line{};
     int total = 0;
     while(std::getline(file, line))
     {
         // Convert the chars into ints
-        std::vector<int> numbers;
+        std::vector<int> numbers{};
         std::transform(line.begin(), line.end(), std::back_inserter(numbers), [](char c) {return c - '0';});
 
         // Accumulate the result
