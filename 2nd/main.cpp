@@ -5,7 +5,7 @@
 #include <thread>
 #include <future>
 
-inline bool IsLineInvalidForPart1(const std::string& line)
+bool IsLineInvalidForPart1(const std::string& line)
 {
     if(line.size() % 2 != 0)
     {
@@ -20,7 +20,7 @@ inline bool IsLineInvalidForPart1(const std::string& line)
     return false;
 }
 
-inline bool IsLineInvalidForPart2(const std::string& line)
+bool IsLineInvalidForPart2(const std::string& line)
 {
     // Regex matches from line start (^) any sequence of one or more digits (\d+) that is immediately repeated (\1) once or more (+) with no characters in between.
     const std::regex InvalidIdSequence("^(\\d+)\\1+$",  std::regex_constants::ECMAScript);
@@ -32,7 +32,7 @@ inline bool IsLineInvalidForPart2(const std::string& line)
 }
 
 // The task that gets passed to the thread.
-inline std::pair<size_t,size_t> RangeValidationTask(const std::string& startRange, const std::string& endRange)
+std::pair<size_t,size_t> RangeValidationTask(const std::string& startRange, const std::string& endRange)
 {
     size_t invalidIdSumPart1 = 0;
     size_t invalidIdSumPart2 = 0;
@@ -62,15 +62,14 @@ int main()
         exit(1);
     }
 
-    std::string line;
+    std::string line{};
     std::getline(file, line);
-    file.close(); // Only one line expected.
 
     std::vector<std::future<std::pair<size_t, size_t>>> workers{};
     std::stringstream lineStream(line);
     while(lineStream.good())
     {
-        std::string idRangeString;
+        std::string idRangeString{};
         if(!getline(lineStream, idRangeString, ','))
         {
             std::cerr << "Input string is not in expected format." << std::endl;
